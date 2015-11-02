@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int one(char *str) {
+static int is_unique(char *str) {
     if (str == NULL) return 1;
     for (int i = 0; i < strlen(str); i++) {
         char cur = str[i];
@@ -15,13 +15,54 @@ static int one(char *str) {
     return 1;
 }
 
-static void two(char *str) {
+static void reverse(char *str) {
     if (str == NULL) return;
     for (int i = 0; i < strlen(str) / 2; i++) {
         char temp = str[i];
         str[i] = str[strlen(str) - i - 1];
         str[strlen(str) - i - 1] = temp;
     }
+}
+
+static void remove_duplicates(char *str) {
+    if (str == NULL) return;
+    char *cur = str;
+    for (cur = str; *cur != '\0'; cur++) {
+        char *next = cur + 1;
+        for ( ; *next != '\0'; next++) {
+            if (*cur == *next) {
+                char *src = next + 1;
+                char *dst = next;
+                while (*src != '\0') {
+                    *dst = *src;
+                    src++; dst++;
+                }
+                *dst = '\0';
+                next--;
+            }
+        }
+    }
+}
+
+static int anagram(char *first, char *second) {
+    if (first == NULL || second == NULL) return 0;
+    while (*first != '\0') {
+        if (*second == '\0') return 0;
+        int found = 0;
+        for (char *finder = second; *finder != '\0'; finder++) {
+            if (*finder == *first) {
+                char temp = *finder;
+                *finder = *second;
+                *second = temp;
+                found = 1;
+            }
+        }
+        if (!found) return 0;
+        first++;
+        second++;
+    }
+    if (*second != '\0') return 0;
+    return 1;
 }
 
 int main(int argc, char **argv) {
@@ -32,12 +73,18 @@ int main(int argc, char **argv) {
     }
 
     if (strcmp(argv[1], "-q1") == 0) {
-        int unique = one(argv[2]);
+        int unique = is_unique(argv[2]);
         unique ? printf("true\n") : printf("false\n");
         exit(0);
     } else if (strcmp(argv[1], "-q2") == 0) {
-        two(argv[2]);
+        reverse(argv[2]);
         printf("%s\n", argv[2]);
         exit(0);
+    } else if (strcmp(argv[1], "-q3") == 0) {
+        remove_duplicates(argv[2]);
+        printf("%s\n", argv[2]);
+        exit(0);
+    } else if (strcmp(argv[1], "-q4") == 0) {
+        anagram(argv[2], argv[3]) ? printf("true\n") : printf("false\n");
     }
 }
