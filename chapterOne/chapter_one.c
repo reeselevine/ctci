@@ -65,6 +65,26 @@ static int anagram(char *first, char *second) {
     return 1;
 }
 
+static char* replace_spaces(char *str) {
+    if (str == NULL) return str;
+    char *replaced = malloc(strlen(str) * 3);
+    char *orig = replaced;
+    while (*str != '\0') {
+        if (*str == ' ') {
+            *replaced = '%';
+            replaced ++;
+            *replaced = '2';
+            replaced++;
+            *replaced = '0';
+        } else {
+            *replaced = *str;
+        }
+        replaced++;
+        str++;
+    }
+    return orig;
+}
+
 int main(int argc, char **argv) {
     if (argc == 0) {
         printf("Usage:\n");
@@ -73,8 +93,7 @@ int main(int argc, char **argv) {
     }
 
     if (strcmp(argv[1], "-q1") == 0) {
-        int unique = is_unique(argv[2]);
-        unique ? printf("true\n") : printf("false\n");
+        is_unique(argv[2]) ? printf("true\n") : printf("false\n");
         exit(0);
     } else if (strcmp(argv[1], "-q2") == 0) {
         reverse(argv[2]);
@@ -86,5 +105,8 @@ int main(int argc, char **argv) {
         exit(0);
     } else if (strcmp(argv[1], "-q4") == 0) {
         anagram(argv[2], argv[3]) ? printf("true\n") : printf("false\n");
+    } else if (strcmp(argv[1], "-q5") == 0) {
+        printf("%s\n", replace_spaces(argv[2]));
+        exit(0);
     }
 }
