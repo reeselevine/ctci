@@ -1,12 +1,21 @@
 public class ChapterOne {
 
     public static void main(String... args) {
-       if (args.length == 0) printUsage();
+       if (args.length == 0) {
+           printUsage();
+           return;
+       }
        if (args[0].equals("-q1")) {
            if (args.length != 2) {
                printUsage();
            } else {
                System.out.println(isUnique(args[1]));
+           }
+       } else if (args[0].equals("-q6")) {
+           if (args.length != 1) {
+               printUsage();
+           } else {
+               System.out.println(testRotateMatrix());
            }
        }
     }
@@ -24,5 +33,54 @@ public class ChapterOne {
             return false;
         }
         return isUnique(str.substring(1)); 
+    }
+
+    public static int[][] rotateMatrix(int[][] matrix) {
+        if (matrix == null || matrix.length == 1) return matrix;
+        for (int i = matrix.length - 1; i > 0; i-= 1) {
+            for (int j = matrix.length - i - 1; j < i; j++) {
+                int top = matrix[j][matrix.length - i - 1];
+                int right = matrix[i][j];
+                int bottom = matrix[matrix.length - j - 1][i];
+                matrix[j][matrix.length - i - 1] = matrix[matrix.length - i - 1][matrix.length - j - 1];
+                matrix[i][j] = top;
+                matrix[matrix.length - j - 1][i] = right;
+                matrix[matrix.length - i -1][matrix.length - j - 1] = bottom;
+            }
+        }
+        return matrix;
+    }
+
+    public static boolean testMatrixEquality(int[][] matrixOne, int[][]matrixTwo) {
+        for (int i = 0; i < matrixOne.length; i++) {
+            for (int j = 0; j < matrixOne.length; j++) {
+                if (matrixOne[i][j] != matrixTwo[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean testRotateMatrix() {
+        int[][] c = {{1, 2}, {3, 4}};
+        int[][] rotatedC = {{2, 4}, {1, 3}};
+        int[][] maybeRotated = rotateMatrix(c);
+        if (!testMatrixEquality(maybeRotated, rotatedC)) {
+            System.out.println("herea");
+            return false;
+        }
+        int[][] a ={{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        int rotatedA[][] = {{3, 6, 9}, {2, 5, 8}, {1, 4, 7}};
+        if (!testMatrixEquality(rotateMatrix(a), rotatedA)) {
+            System.out.println("hereb");
+            return false;
+        }
+        int[][] b = {{1}};
+        if (!testMatrixEquality(rotateMatrix(b), b)) {
+            System.out.println("herec");
+            return false;
+        }
+        return true;
     }
 }
