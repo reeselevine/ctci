@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class ChapterOne {
 
     public static void main(String... args) {
@@ -16,6 +18,12 @@ public class ChapterOne {
                printUsage();
            } else {
                System.out.println(testRotateMatrix());
+           }
+       } else if (args[0].equals("-q7")) {
+           if (args.length != 1) {
+               printUsage();
+           } else {
+               System.out.println(testSetMatrixZeros());
            }
        }
     }
@@ -53,7 +61,7 @@ public class ChapterOne {
 
     public static boolean testMatrixEquality(int[][] matrixOne, int[][]matrixTwo) {
         for (int i = 0; i < matrixOne.length; i++) {
-            for (int j = 0; j < matrixOne.length; j++) {
+            for (int j = 0; j < matrixOne[0].length; j++) {
                 if (matrixOne[i][j] != matrixTwo[i][j]) {
                     return false;
                 }
@@ -67,20 +75,57 @@ public class ChapterOne {
         int[][] rotatedC = {{2, 4}, {1, 3}};
         int[][] maybeRotated = rotateMatrix(c);
         if (!testMatrixEquality(maybeRotated, rotatedC)) {
-            System.out.println("herea");
             return false;
         }
         int[][] a ={{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
         int rotatedA[][] = {{3, 6, 9}, {2, 5, 8}, {1, 4, 7}};
         if (!testMatrixEquality(rotateMatrix(a), rotatedA)) {
-            System.out.println("hereb");
             return false;
         }
         int[][] b = {{1}};
         if (!testMatrixEquality(rotateMatrix(b), b)) {
-            System.out.println("herec");
             return false;
         }
         return true;
     }
+
+    public static int[][] setMatrixZeros(int[][] matrix) {
+        if (matrix == null) return matrix;
+        ArrayList<Integer[]> seen = new ArrayList<Integer[]>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    seen.add(new Integer[] {i, j});
+                }
+            }
+        }
+        for (Integer[] pair : seen) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[pair[0]][j] = 0;
+            }
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][pair[1]] = 0;
+            }
+        }
+        return matrix;
+    }
+
+    public static boolean testSetMatrixZeros() {
+        int[][] a = {{1, 2, 0}, {3, 0, 4}};
+        int[][] zeroedA = {{0, 0, 0}, {0, 0, 0}};
+        if (!testMatrixEquality(setMatrixZeros(a), zeroedA)) {
+            return false;
+        }
+        int[][] b = {{1, 2}, {3, 4}};
+        if (!testMatrixEquality(setMatrixZeros(b), b)) {
+            return false;
+        }
+        int[][] c = {{1, 1, 1, 1}, {0, 1, 0, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
+        int[][] zeroedC = {{0, 1, 0, 1}, {0, 0, 0, 0}, {0, 1, 0, 1}, {0, 1, 0, 1}};
+        if (!testMatrixEquality(setMatrixZeros(c), zeroedC)) {
+            return false;
+        }
+        return true;
+    }
+
 }
