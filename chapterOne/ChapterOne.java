@@ -25,6 +25,12 @@ public class ChapterOne {
            } else {
                System.out.println(testSetMatrixZeros());
            }
+       } else if (args[0].equals("-q8")) {
+           if (args.length != 3) {
+               printUsage();
+           } else {
+               System.out.println(isRotation(args[1], args[2]));
+           }
        }
     }
 
@@ -128,4 +134,11 @@ public class ChapterOne {
         return true;
     }
 
+    public static boolean isRotation(String a, String b) {
+        if (a == null || b == null || a.length() != b.length()) {
+            return false;
+        }
+        String ab = a + b;
+        return ab.contains(b);
+    }
 }
