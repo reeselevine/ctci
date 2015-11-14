@@ -26,4 +26,14 @@ public class ChapterTwoTest {
         b.removeDuplicates();
         assertEquals(null, b.next);
     }
+
+    @Test
+    public void testFindNode() {
+        Node a = new Node(1);
+        a.appendToTail(2); a.appendToTail(3);
+        a.appendToTail(4); a.appendToTail(5);
+        assertEquals(3, a.findNode(2).data);
+        assertEquals(null, a.findNode(5));
+        assertEquals(5, a.findNode(0).data);
+    }
 }
