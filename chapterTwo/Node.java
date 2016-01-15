@@ -75,6 +75,42 @@ public class Node {
      *  Returns the head of the summed list.
      *  Does not support negative numbers
      */
+    public static Node addLists(Node l1, Node l2, boolean carry) {
+        Node result;
+        if (l1 == null) {
+            if (l2 == null) {
+                if (carry) {
+                    result = new Node(1);
+                } else {
+                    result = null;
+                }
+            } else if (carry) {
+                result = new Node((l2.data + 1) % 10);
+                result.next = addLists(l1, l2.next, result.data == 0);
+            } else {
+                result = l2;
+            }
+        } else if (l2 == null) {
+            if (carry) {
+                result = new Node((l1.data + 1) % 10);
+                result.next = addLists(l1.next, l2, result.data == 0);
+            } else {
+                result = l1;
+            }
+        } else {
+            if (carry) {
+                result = new Node((l1.data + l2.data + 1) % 10);
+                result.next = addLists(l1.next, l2.next, (l1.data + l2.data + 1) > 9);
+            } else {
+                result = new Node((l1.data + l2.data) % 10);
+                result.next = addLists(l1.next, l2.next, (l1.data + l2.data) > 9);
+            }
+        }
+        return result;
+    }
+
+  
+
     public static Node addLists(Node l1, Node l2) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;

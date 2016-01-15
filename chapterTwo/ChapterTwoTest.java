@@ -50,6 +50,43 @@ public class ChapterTwoTest {
     }
 
     @Test
+    public void testAddListsRecursive() {
+        Node a = new Node(3);
+        a.appendToTail(2);
+        Node b = new Node(4);
+        b.appendToTail(5);
+        Node c = new Node(7);
+        c.appendToTail(7);
+        Node d = Node.addLists(a, b, false);
+        assertEquals(c.data, d.data);
+        assertEquals(c.next.data, d.next.data);
+
+        c = new Node(1);
+        c.appendToTail(3);
+        c.appendToTail(1);
+        Node e = Node.addLists(b, d, false);
+        assertEquals(c.data, e.data);
+        assertEquals(c.next.data, e.next.data);
+        assertEquals(c.next.next.data, e.next.next.data);
+
+        a = new Node(7);
+        b = new Node(8);
+        b.appendToTail(9);
+        b.appendToTail(4);
+        c = new Node(5);
+        c.appendToTail(0);
+        c.appendToTail(5);
+        d = Node.addLists(a, b, false);
+        assertEquals(c.next.data, d.next.data);
+        d = Node.addLists(b, a);
+        assertEquals(c.next.next.data, d.next.next.data);
+
+        a = null;
+        c = Node.addLists(a, b, false);
+        assertEquals(b.data, c.data);
+    }
+    
+    @Test
     public void testAddLists() {
         Node a = new Node(3);
         a.appendToTail(2);
